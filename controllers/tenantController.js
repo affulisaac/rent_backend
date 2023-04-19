@@ -7,11 +7,12 @@ const getAllTenants = asyncHandler(async (req, res) => {
 });
 
 const getTenant = asyncHandler(async (req, res) => {
-  const tenant = await Tenant.findById(req.params.id);
-  if (!tenant) {
+  const tenant = await Tenant.findById(req.params.id).catch(err=>{
     res.status(400);
     throw new Error("Tenant not found");
   }
+);
+
   res.status(200).json(tenant);
 });
 
@@ -57,8 +58,8 @@ const updateTenant = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Tenant not found");
   }
-  const updatedTenant = Tenant.findByIdAndUpdate(req.params.id, req.body)
-  console.log(JSON.stringify(updatedTenant))
+  const updatedTenant = Tenant.findByIdAndUpdate(req.params.id, req.body);
+  console.log(JSON.stringify(updatedTenant));
   res.status(200).json(updatedTenant);
 });
 
@@ -69,7 +70,7 @@ const deleteTenant = asyncHandler(async (req, res) => {
     throw new Error();
   }
   await Tenant.findByIdAndDelete(req.params.id);
-  res.status(200).json({ id: req.params.id, message: "Deleted successfuly" });
+  res.status(200).json({ id: req.params.id, message: "Deleted successfully" });
 });
 
 module.exports = {

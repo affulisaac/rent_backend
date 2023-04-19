@@ -15,7 +15,7 @@ const loginUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id)
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -53,7 +53,7 @@ const registerUser = asyncHandler(async (req, res) => {
       _id: user.id,
       name: user.name,
       email: user.email,
-      token: generateToken(user._id)
+      token: generateToken(user._id),
     });
   } else {
     res.status(400);
@@ -61,27 +61,22 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-const getMe = asyncHandler( async (req, res) => {
-    const {name, email, _id } = await User.findById(req.user.id)
-    res.status(200).json(
-        {
-            name,
-            email,
-            id: _id
-        }
-    );
-}
-)
+const getMe = asyncHandler(async (req, res) => {
+  const { name, email, _id } = await User.findById(req.user.id);
+  res.status(200).json({
+    name,
+    email,
+    _id
+  });
+});
 
 //Generate JWT Token
-const generateToken = (id)=>{
-    return jwt.sign({id}, process.env.JWT_SECRET, {
-        expiresIn: '2d'
-    })
-}
-
-const getUsers = (req, res) => {
-
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: "2d",
+  });
 };
+
+const getUsers = (req, res) => {};
 
 module.exports = { registerUser, loginUser, getMe };

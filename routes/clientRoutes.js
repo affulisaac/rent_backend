@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const { getProperties, addProperty, deleteProperty, updateProperty }  = require('../controllers/propertyController')
+const { getClients, addClient, deleteClient, updateClient, getClient }  = require('../controllers/clientController')
 
-router.route('/').get(getProperties).post(addProperty)
-router.route('/:id').put(updateProperty).delete(deleteProperty) 
+router.route('/').get(getClients).post(addClient)
+router.route('/:id').put(updateClient).delete(deleteClient).get(getClient) 
 
 module.exports = router
