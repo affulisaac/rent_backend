@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Property = require("../model/propertyModel");
 
 const getProperties = asyncHandler(async (req, res) => {
-  const properties = await Property.find().populate('user');
+  const properties = await Property.find().populate("user", "name email _id");
   res.status(200).json(properties);
 });
 
@@ -17,7 +17,7 @@ const updateProperty = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Property not found");
   }
-  const updateProperty = Property.updateOne({_id: req.params.id}, req.body);
+  const updateProperty = Property.updateOne({ _id: req.params.id }, req.body);
   res.status(200).json(updateProperty);
 });
 

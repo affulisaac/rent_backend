@@ -15,7 +15,11 @@ const protect = asyncHandler( async (req, res, next) => {
 
             //Get user from token
 
-            req.user = await User.findById(decoded.id).select('-password');
+            const user = await User.findById(decoded.id).select('-password');
+            req.user = user
+            if(req.body){
+                req.body.user = user._id
+            }
             next()
 
         } catch (error) {

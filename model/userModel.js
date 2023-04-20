@@ -14,7 +14,17 @@ const userSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please provide a valida password'],
 
-    }
+    }, 
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Business",
+        required: [true, "User business is required"]
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'User'
+    },
 },
 {
     timestamps: true

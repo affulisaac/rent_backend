@@ -2,17 +2,16 @@ const asyncHandler = require("express-async-handler");
 const Tenant = require("../model/tenantModel");
 
 const getAllTenants = asyncHandler(async (req, res) => {
-  const tenants = await Tenant.find();
+  console.log(req.user);
+  const tenants = await Tenant.find().populate("user", "name email _id");
   res.status(200).json(tenants);
 });
 
 const getTenant = asyncHandler(async (req, res) => {
-  const tenant = await Tenant.findById(req.params.id).catch(err=>{
+  const tenant = await Tenant.findById(req.params.id).catch((err) => {
     res.status(400);
     throw new Error("Tenant not found");
-  }
-);
-
+  });
   res.status(200).json(tenant);
 });
 
@@ -48,8 +47,9 @@ const addTenant = asyncHandler(async (req, res) => {
     emergency_contact,
     nationality,
     contact_number,
+    user: req.user._id,
   });
-  res.status(200).json(property);
+   res.status(200).json(property);
 });
 
 const updateTenant = asyncHandler(async (req, res) => {
@@ -59,7 +59,6 @@ const updateTenant = asyncHandler(async (req, res) => {
     throw new Error("Tenant not found");
   }
   const updatedTenant = Tenant.findByIdAndUpdate(req.params.id, req.body);
-  console.log(JSON.stringify(updatedTenant));
   res.status(200).json(updatedTenant);
 });
 
