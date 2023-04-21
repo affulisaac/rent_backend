@@ -14,8 +14,8 @@ const propertySchema = mongoose.Schema({
         type: String,
         required: false
     },
-    number: {
-        type: String,
+    rooms: {
+        type: Array,
         required: [ true, 'Property number is required']
     },
     description: {

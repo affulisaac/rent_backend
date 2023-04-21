@@ -1,17 +1,18 @@
 const Joi = require('joi');
 
 const businessSchema = Joi.object({
-  name: Joi.string().email().required(),
+  name: Joi.string().required(),
   location: Joi.string().required(),
   description: Joi.string().required(),
   user: Joi.allow()
 });
 
 const propertySchema = Joi.object({
-    location: Joi.string().email().required(),
+    location: Joi.string().required(),
     name: Joi.string().required(),
     gpgps: Joi.string().required(),
-    number: Joi.number().required(),
+    rooms: Joi.array().required(),
+    remarks: Joi.allow(),
     description: Joi.string().required(),
   });
 
