@@ -39,6 +39,11 @@ const tenantSchema = mongoose.Schema(
       required: [true, "Rent start date required"],
     },
 
+    appartment_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Property"
+    },
+
     rent_end_date: {
       type: String,
       required: [true, "Rent end date required"],
@@ -49,16 +54,15 @@ const tenantSchema = mongoose.Schema(
     },
     total_amount: {
       type: String,
-      required: false,
-    },
-
-    appartment_number: {
-      type: String,
       required: true,
+    },
+    rooms: {
+      type: Array,
+      required: true
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: "User",
     }
 

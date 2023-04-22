@@ -3,7 +3,8 @@ const bcrypt = require("bcryptjs");
 const asyncHandler = require("express-async-handler");
 const User = require("../model/userModel");
 const Business = require("../model/businessModel");
-const { use } = require("../routes/clientRoutes");
+const crypto = require("crypto");
+
 const loginUser = asyncHandler(async (req, res) => {
   console.log(res.body);
   const { email, password, business, business_id } = req.body;
@@ -27,50 +28,29 @@ const loginUser = asyncHandler(async (req, res) => {
 });
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, business_id, business } = req.body;
-  if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("All fields are required");
-  }
-  if (!business_id && !business) {
-    res.status(400);
-    throw new Error("Assign a business to this user");
-  }
+  const { email, password } = req.body;
+
   const userExist = await User.findOne({ email });
   if (userExist) {
     res.status(400);
     throw new Error("The email has already been used");
   }
 
-  let newBusiness;
-  if (business) {
-    newBusiness = await Business.create(business).catch((err) => {
-      res.status(400);
-      throw new Error(JSON.stringify(err));
-    });
-  }
-
-  console.log(newBusiness)
-
-  //Hash password
 
   const salt = await bcrypt.genSalt(10);
   const hashPassword = await bcrypt.hash(password, salt);
-
+  const clientID = crypto.randomBytes(8).toString("hex");
+  req.body.password = hashPassword
+  req.body.client_id = clientID
   //create user
-  const user = await User.create({
-    name,
-    email,
-    password: hashPassword,
-    business_id: req.body?.business_id ? req.body?.business_id : newBusiness?._id,
-    business: req.body?.business_id ? req.body?.business_id : newBusiness?._id 
-  }).populate('business', '-password');
-
+  const user = await User.create(req.body)
   if (user) {
     res.status(201).json(
-      {...user,  token: generateToken(user._id)}
-     ,
-    );
+      { 
+      ...user, 
+      //token: generateToken(user._id)//
+      }
+   );
   } else {
     res.status(400);
     throw new Error("Invalid user data");
@@ -78,7 +58,10 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const getMe = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).populate('business', '-password');
+  const user = await User.findById(req.user.id).populate(
+    "business",
+    "-password"
+  );
   res.status(200).json(user);
 });
 
@@ -90,9 +73,9 @@ const generateToken = (id) => {
 };
 
 const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find().populate('business') .select('-password')
-  console.log(users)
-  res.status(200).json(users)
+  const users = await User.find().populate("business").select("-password");
+  console.log(users);
+  res.status(200).json(users);
 });
 
-module.exports = { registerUser, loginUser, getMe , getUsers};
+module.exports = { registerUser, loginUser, getMe, getUsers };

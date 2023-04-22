@@ -7,6 +7,7 @@ const getProperties = asyncHandler(async (req, res) => {
 });
 
 const addProperty = asyncHandler(async (req, res) => {
+  console.log(res.body)
   const property = await Property.create(req.body);
   res.status(200).json(property);
 });
@@ -17,7 +18,9 @@ const updateProperty = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Property not found");
   }
-  const updateProperty = Property.updateOne({ _id: req.params.id }, req.body);
+  const updateProperty = Property.updateOne({ _id: req.params.id }, req.body).catch(err=>{
+    console.log(err)
+  });
   res.status(200).json(updateProperty);
 });
 

@@ -24,6 +24,7 @@ const addTenant = asyncHandler(async (req, res) => {
     emergency_contact_name,
     phone,
     email,
+    rooms,
     occupation,
     amount_per_month,
     appartment_id,
@@ -40,6 +41,7 @@ const addTenant = asyncHandler(async (req, res) => {
     emergency_contact_name,
     phone,
     email,
+    rooms,
     amount_per_month,
     occupation,
     appartment_id,
@@ -47,7 +49,7 @@ const addTenant = asyncHandler(async (req, res) => {
     emergency_contact,
     nationality,
     contact_number,
-    user: req.user._id,
+    user: req.user?._id,
   });
    res.status(200).json(property);
 });
@@ -58,8 +60,9 @@ const updateTenant = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Tenant not found");
   }
-  const updatedTenant = Tenant.findByIdAndUpdate(req.params.id, req.body);
-  res.status(200).json(updatedTenant);
+  const updatedTenant = Tenant.updateOne({_id: req.params.id}, req.body);
+  console.log(updatedTenant)
+  res.status(200).json(updatedTenant?._update);
 });
 
 const deleteTenant = asyncHandler(async (req, res) => {

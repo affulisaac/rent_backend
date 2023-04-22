@@ -7,6 +7,21 @@ const businessSchema = Joi.object({
   user: Joi.allow()
 });
 
+const userSchema = Joi.object({
+  name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  nationality: Joi.string().required(),
+  national_id: Joi.allow(),
+  contact_number: Joi.string(),
+  alternative_number: Joi.allow(),
+  password: Joi.required(),
+  alternative_contact: Joi.allow(),
+  address: Joi.required(),
+  repeat_password: Joi.allow(),
+
+});
+
+
 const propertySchema = Joi.object({
     location: Joi.string().required(),
     name: Joi.string().required(),
@@ -32,4 +47,4 @@ const propertySchema = Joi.object({
   });
   
 
-module.exports = { businessSchema, propertySchema, tenantSchema }
+module.exports = { businessSchema, propertySchema, tenantSchema, userSchema }

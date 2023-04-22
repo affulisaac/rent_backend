@@ -10,6 +10,27 @@ const userSchema = mongoose.Schema({
         required: [true, 'Please provide an email'],
         unique: true
     },
+    nationality: {
+        type: String,
+        required: false,
+    },
+    contact_number: {
+        type: String,
+        required: [true, "Phone number is required"],
+      },
+    alternative_contact: {
+        type: String,
+        required: false,
+    },
+    national_id: {
+        type: String,
+        required: false,
+    },
+
+    address: {
+        type: String,
+        required: false,
+    },
     password: {
         type: String,
         required: [true, 'Please provide a valida password'],
@@ -18,7 +39,7 @@ const userSchema = mongoose.Schema({
     business: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Business",
-        required: [true, "User business is required"]
+        required: [false, "User business is required"]
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
