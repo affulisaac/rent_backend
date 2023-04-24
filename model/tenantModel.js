@@ -54,7 +54,7 @@ const tenantSchema = mongoose.Schema(
     },
     total_amount: {
       type: String,
-      required: true,
+      required: false,
     },
     rooms: {
       type: Array,

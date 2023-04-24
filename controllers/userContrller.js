@@ -7,7 +7,7 @@ const crypto = require("crypto");
 
 const loginUser = asyncHandler(async (req, res) => {
   console.log(res.body);
-  const { email, password, business, business_id } = req.body;
+  const { email, password } = req.body;
 
   if (!email || !password) {
     res.status(400);

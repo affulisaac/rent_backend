@@ -1,22 +1,18 @@
 const mongoose = require('mongoose')
 
 const propertySchema = mongoose.Schema({
- 
-    location: {
-        type: String,
-        required: [ true, 'Location is required']
-    },
+
     name: {
         type: String,
-        required: [ true, 'Property title is required']
+        required: [ true, 'Property name is required']
+    },
+    location: {
+        type: String,
+        required: true
     },
     gpgps: {
         type: String,
-        required: false
-    },
-    rooms: {
-        type: Array,
-        required: [ true, 'Property number is required']
+        required: true
     },
     description: {
         type: String,
@@ -26,7 +22,7 @@ const propertySchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'User'
-    }
+    },
 },
 {
     timestamps: true

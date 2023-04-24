@@ -7,6 +7,14 @@ const businessSchema = Joi.object({
   user: Joi.allow()
 });
 
+const propertySchema = Joi.object({
+  name: Joi.string().required(),
+  location: Joi.string().required(),
+  gpgps: Joi.string().required(),
+  description: Joi.string().required(),
+  user: Joi.allow()
+});
+
 const userSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email().required(),
@@ -22,12 +30,11 @@ const userSchema = Joi.object({
 });
 
 
-const propertySchema = Joi.object({
-    location: Joi.string().required(),
+const appartmentSchema = Joi.object({
     name: Joi.string().required(),
-    gpgps: Joi.string().required(),
     rooms: Joi.array().required(),
     remarks: Joi.allow(),
+    property_id: Joi.allow(),
     description: Joi.string().required(),
   });
 
@@ -47,4 +54,4 @@ const propertySchema = Joi.object({
   });
   
 
-module.exports = { businessSchema, propertySchema, tenantSchema, userSchema }
+module.exports = { businessSchema, appartmentSchema, tenantSchema, userSchema, propertySchema }
