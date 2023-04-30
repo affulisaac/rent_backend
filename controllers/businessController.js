@@ -7,7 +7,6 @@ const getBusinesses = asyncHandler(async (req, res) => {
 });
 
 const addBusiness = asyncHandler(async (req, res) => {
-  console.log(req.body)
   const business = await Business.create(req.body);
   res.status(200).json(business);
 });
@@ -19,7 +18,6 @@ const updateBusiness = asyncHandler(async (req, res) => {
     throw new Error("Business not found");
   }
   const updatedBusiness = Business.findByIdAndUpdate(req.params.id, req.body).populate('user');
-  console.log(updatedBusiness)
   res.status(200).json(updatedBusiness._update);
 });
 

@@ -19,7 +19,7 @@ const appartmentSchema = mongoose.Schema({
         required: false,
         ref: 'User'
     },
-    property_id: {
+    property: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Property'

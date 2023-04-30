@@ -6,7 +6,7 @@ const { propertySchema } = require('../model/schemaModel')
 const { validateParams } = require('../middlewares/validatorMiddleware')
 
 
-router.route('/').get(protect, getProperties).post(protect, validateParams(propertySchema), addProperty)
+router.route('/').get(getProperties).post(protect, validateParams(propertySchema), addProperty)
 router.route('/:id').put(protect, updateProperty).delete(protect, deleteProperty).get(protect, getProperty) 
 
 module.exports = router

@@ -14,6 +14,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 
+app.use('/api/payments', require('./routes/paymentRoute'))
 app.use('/api/appartment', require('./routes/appartmentRoutes'))
 app.use('/api/properties', require('./routes/propertyRoute'))
 app.use('/api/users', require('./routes/userRoutes'))

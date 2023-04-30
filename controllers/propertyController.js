@@ -18,7 +18,6 @@ const updateProperty = asyncHandler(async (req, res) => {
     throw new Error("Property not found");
   }
   const updatedProperty = Property.findByIdAndUpdate(req.params.id, req.body).populate('user');
-  console.log(updatedProperty)
   res.status(200).json(updatedProperty._update);
 });
 

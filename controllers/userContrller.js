@@ -6,7 +6,6 @@ const Business = require("../model/businessModel");
 const crypto = require("crypto");
 
 const loginUser = asyncHandler(async (req, res) => {
-  console.log(res.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -74,7 +73,6 @@ const generateToken = (id) => {
 
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find().populate("business").select("-password");
-  console.log(users);
   res.status(200).json(users);
 });
 

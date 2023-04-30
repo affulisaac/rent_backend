@@ -41,7 +41,7 @@ const tenantSchema = mongoose.Schema(
 
     appartment_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Property"
+      ref: "Appartment"
     },
 
     rent_end_date: {
