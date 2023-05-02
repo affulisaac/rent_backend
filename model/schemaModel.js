@@ -1,3 +1,4 @@
+const { string } = require('joi');
 const Joi = require('joi');
 
 const businessSchema = Joi.object({
@@ -47,8 +48,10 @@ const appartmentSchema = Joi.object({
   });
 
   const tenantSchema = Joi.object({
-    location: Joi.string().email().required(),
     nationality: Joi.string().required(),
+    name: Joi.string().required(),
+    rooms: Joi.array(),
+    national_id:Joi.string().required(),
     contact_number: Joi.string().required(),
     email: Joi.string().email().required(),
     national_id: Joi.string().required(),
@@ -56,9 +59,14 @@ const appartmentSchema = Joi.object({
     emergency_contact: Joi.string().required(),
     emergency_contact_name: Joi.string().required(),
     rent_start_date: Joi.string().required(),
+    number_of_month: Joi.number().required(),
     rent_end_date: Joi.string().required(),
     amount_per_month: Joi.string().required(),
-    appartment_number: Joi.string().required(),
+    appartment: Joi.string().required(),
+    total_amount: Joi.number().required(),
+    national_id_type: Joi.allow(),
+    _id: Joi.allow(),
+    user: Joi.allow()
   });
   
 

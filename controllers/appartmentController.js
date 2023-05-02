@@ -21,8 +21,7 @@ const updateAppartment = asyncHandler(async (req, res) => {
   const updateAppartment = Appartment.updateOne(
     { _id: req.params.id },
     req.body
-  ).catch((err) => {
-  });
+  ).catch((err) => {});
   res.status(200).json(updateAppartment);
 });
 
@@ -47,15 +46,18 @@ const deleteAppartment = asyncHandler(async (req, res) => {
 // });
 
 const getAppartment = asyncHandler(async (req, res) => {
-  let appartment = await Appartment.findById(req.params.id).populate('property_id') .catch((err) => {
-    res.status(400);
-    throw new Error("Property not found");
-  });
+  let appartment = await Appartment.findById(req.params.id).populate('property')
+    // .populate("property")
+    .catch((err) => {
+      res.status(400);
+      throw new Error("Appartment not found");
+    });
   if (appartment) {
-    const tenant = await Tenant.find({ appartment_id: req.params?.id });
+    const tenant = await Tenant.find({ appartment: req.params?.id });
+    console.log(tenant);
     appartment.tenant = tenant;
   }
-  res.status(200).json(tenant);
+  res.status(200).json(appartment);
 });
 
 module.exports = {

@@ -4,7 +4,8 @@
   "description": "A rent app for property owners",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start:dev": "nodemon server.js",
+    "start": "server.js"
   },
   "keywords": [
     "rent",
@@ -21,7 +22,9 @@
     "express-async-handler": "^1.2.0",
     "joi": "^17.9.1",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.3"
+    "mongoose": "^7.0.3",
+    "node-cron": "^3.0.2",
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"

@@ -18,6 +18,10 @@ const tenantSchema = mongoose.Schema(
       type: String,
       required: [true, "Email description is required"],
     },
+    number_of_month: {
+      type: Number,
+      required: [true, "Number of month is required"],
+    },
     national_id: {
       type: String,
       required: [true, "National ID is required"],
@@ -39,7 +43,7 @@ const tenantSchema = mongoose.Schema(
       required: [true, "Rent start date required"],
     },
 
-    appartment_id: {
+    appartment: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Appartment"
     },
@@ -53,7 +57,7 @@ const tenantSchema = mongoose.Schema(
       required: [true, "Amount per month is required"],
     },
     total_amount: {
-      type: String,
+      type: Number,
       required: false,
     },
     rooms: {
