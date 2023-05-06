@@ -20,6 +20,8 @@ app.use('/api/properties', require('./routes/propertyRoute'))
 app.use('/api/users', require('./routes/userRoutes'))
 app.use('/api/tenants', require('./routes/tenantRoutes'))
 app.use('/api/businesses', require('./routes/businessRoutes'))
+app.use('/api/sms', require('./routes/SMSRoute'))
+app.use('/api/dashboard', require('./routes/dashboardRoute'))
 
 app.use(errorHandler) 
 

@@ -20,12 +20,12 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
-    });
+    },);
   } else {
     res.status(400);
     throw new Error("Email or password is not correct");
   }
-});
+},);
 
 const registerUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -41,33 +41,40 @@ const registerUser = asyncHandler(async (req, res) => {
   const clientID = crypto.randomBytes(8).toString("hex");
   req.body.password = hashPassword;
   req.body.client_id = clientID;
-  //create user
+  delete req.body?._id;
+  console.log(req.body);
   const user = await User.create(req.body);
   if (user) {
-    sendSMS("233547469379", "New user has been registered");
-    res.status(201).json({
-      ...user,
-      //token: generateToken(user._id)//
-    });
+    const firsName = req.body?.name?.split(" ")[0];
+    sendSMS(
+      req.body?.contact_number,
+      `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`,
+    );
+    delete user?._doc?.password;
+    res.status(201).json(user?._doc);
   } else {
     res.status(400);
     throw new Error("Invalid user data");
   }
-});
+},);
 
 const getMe = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).populate(
     "business",
-    "-password"
+    "-password",
   );
   res.status(200).json(user);
-});
+},);
 
 //Generate JWT Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "2d",
-  });
+  return jwt.sign(
+    { id },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "2d",
+    },
+  );
 };
 
 const deactivateUser = asyncHandler(async (req, res) => {
@@ -76,24 +83,25 @@ const deactivateUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error();
   }
-  const deactivateUser = await User.findByIdAndUpdate(req.params.id, {
-    status: 0,
-  });
+  const deactivateUser = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      status: 0,
+    },
+  );
   if (deactivateUser) {
-    res
-      .status(200)
-      .json({
-        id: req.params.id,
-        status: 0,
-        message: "User has been deactivated",
-      });
+    res.status(200).json({
+      id: req.params.id,
+      status: 0,
+      message: "User has been deactivated",
+    },);
   }
-});
+},);
 
 const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find().populate("business").select("-password");
   res.status(200).json(users);
-});
+},);
 
 const deleteUser = asyncHandler(async (req, res) => {
   const user = await User.findById(req.params.id);
@@ -103,6 +111,36 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
   await User.findByIdAndDelete(req.params.id);
   res.status(200).json({ id: req.params.id, message: "Deleted successfully" });
-});
+},);
 
-module.exports = { registerUser, deleteUser, deactivateUser, loginUser, getMe, getUsers, deactivateUser };
+const updateUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id)
+    if (!user) {
+      res.status(400);
+      throw new Error("Tenant not found");
+    }
+  const email = await User.find({ email: res.body?.email });
+  console.log(email.length > 0)
+    if(email.length > 0){
+      res.status(400);
+      throw new Error("Email has already been taken");
+    }
+  // console.log(user, req.params.id)
+  
+  const updatedUser = User.updateOne({ _id: req.params.id }, req.body)
+  if(updatedUser){
+      res.status(200).json(updatedUser?._update);
+  }
+},);
+
+module.exports =
+  {
+    registerUser,
+    updateUser,
+    deleteUser,
+    deactivateUser,
+    loginUser,
+    getMe,
+    getUsers,
+    deactivateUser,
+  };

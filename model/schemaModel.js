@@ -32,10 +32,23 @@ const userSchema = Joi.object({
   contact_number: Joi.string(),
   alternative_number: Joi.allow(),
   password: Joi.required(),
+  user: Joi.allow(),
   alternative_contact: Joi.allow(),
   address: Joi.required(),
   repeat_password: Joi.allow(),
+});
 
+const userUpdateSchema = Joi.object({
+  _id: Joi.allow(),
+  name: Joi.string().required(),
+  email: Joi.string().email().required(),
+  nationality: Joi.string().required(),
+  national_id: Joi.allow(),
+  user: Joi.allow(),
+  contact_number: Joi.string(),
+  alternative_number: Joi.allow(),
+  alternative_contact: Joi.allow(),
+  address: Joi.required(),
 });
 
 
@@ -45,6 +58,10 @@ const appartmentSchema = Joi.object({
     remarks: Joi.allow(),
     property: Joi.allow(),
     description: Joi.string().required(),
+  });
+
+  const SMSSchema = Joi.object({
+    type: Joi.string().required(),
   });
 
   const tenantSchema = Joi.object({
@@ -70,4 +87,4 @@ const appartmentSchema = Joi.object({
   });
   
 
-module.exports = { businessSchema, appartmentSchema, tenantSchema, userSchema, propertySchema, paymentSchema }
+module.exports = { businessSchema, SMSSchema, appartmentSchema, tenantSchema, userSchema, userUpdateSchema, propertySchema, paymentSchema }

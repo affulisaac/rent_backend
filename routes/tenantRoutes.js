@@ -6,6 +6,6 @@ const { validateParams } = require('../middlewares/validatorMiddleware')
 const { tenantSchema } = require('../model/schemaModel')
 
 router.route('/').get(protect, getAllTenants).post( protect, validateParams(tenantSchema), addTenant)
-router.route('/:id').put( protect, validateParams(tenantSchema), updateTenant).delete( protect, deleteTenant).get( getTenant)
+router.route('/:id').put( protect, validateParams(tenantSchema), updateTenant).delete( protect, deleteTenant).get(protect, getTenant)
 
 module.exports = router

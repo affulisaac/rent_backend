@@ -16,7 +16,7 @@ const tenantSchema = mongoose.Schema(
     },
     email: {
       type: String,
-      required: [true, "Email description is required"],
+      required: [true, "Email is required"],
     },
     number_of_month: {
       type: Number,

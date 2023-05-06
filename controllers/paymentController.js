@@ -4,7 +4,8 @@ const Tenant = require("../model/tenantModel")
 const { sendSMS } = require("../services/hubtel-sms")
 
 const getPayments = asyncHandler(async (req, res) => {
-  const payment = await Payment.find().populate('tenant', 'name email');
+  console.log(req?.filterObj)
+  const payment = await Payment.find(req.filterObj).populate('tenant', 'name email');
   res.status(200).json(payment);
 });
 

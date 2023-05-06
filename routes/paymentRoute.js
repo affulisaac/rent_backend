@@ -4,9 +4,10 @@ const { getPayments, addPayment, deletePayment, updatePayment, getPayment }  = r
 const { protect } = require('../middlewares/authMiddleware')
 const { paymentSchema } = require('../model/schemaModel')
 const { validateParams } = require('../middlewares/validatorMiddleware')
+const { filter } = require('../middlewares/filter')
 
 
-router.route('/').get(getPayments).post( validateParams(paymentSchema), addPayment)
+router.route('/').get(protect, filter,  getPayments).post( validateParams(paymentSchema), addPayment)
 router.route('/:id').put(protect, updatePayment).delete(protect, deletePayment).get(protect, getPayment) 
 
 module.exports = router
