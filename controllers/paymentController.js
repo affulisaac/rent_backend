@@ -6,7 +6,7 @@ const { sendMessage } = require("../services/arkesel-sms")
 
 const getPayments = asyncHandler(async (req, res) => {
   console.log(req?.filterObj)
-  const payment = await Payment.find(req.filterObj).populate('tenant', 'name email');
+  const payment = await Payment.find(req.filterObj).populate('tenant', 'name email').populate('rent');
   res.status(200).json(payment);
 });
 

@@ -34,6 +34,11 @@ const tenantSchema = mongoose.Schema(
       type: String,
       required: [true, "Emergency contact name is required"],
     },
+    rents: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Rent"
+    }],
+    
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: false,

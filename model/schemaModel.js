@@ -14,6 +14,9 @@ const paymentSchema = Joi.object({
   amount: Joi.number().required(),
   date: Joi.string().required(),
   tenant: Joi.string().required(),
+  type: Joi.string().required(),
+  rent: Joi.string().required(),
+  method: Joi.string().required(),
   description: Joi.string().required(),
   user: Joi.allow(),
 });
@@ -94,6 +97,7 @@ const rentSchema = Joi.object({
   apartment: Joi.string().required(),
   total_amount: Joi.number().required(),
   rooms: Joi.array(),
+  tenant: Joi.string().allow(),
   remarks: Joi.string().allow(),
   _id: Joi.allow(),
   user: Joi.allow(),
@@ -102,6 +106,7 @@ const rentSchema = Joi.object({
 module.exports = {
   businessSchema,
   SMSSchema,
+  rentSchema,
   apartmentSchema,
   tenantSchema,
   userSchema,

@@ -4,7 +4,7 @@ const { sendMessage } = require("../services/arkesel-sms");
 
 const getAllTenants = async (req, res) => {
   try {
-    const tenants = await Tenant.find().populate("user", "name email _id");
+    const tenants = await Tenant.find().populate('rents').populate("user", "name email _id");
     res.status(200).json(tenants);
   } catch (error) {
     res.status(400).json(error.message);
@@ -14,6 +14,8 @@ const getAllTenants = async (req, res) => {
 const getTenant = asyncHandler(async (req, res) => {
   const tenant = await Tenant.findById(req.params.id)
     .populate("user", "name email _id")
+    .populate('rents')
+    .populate('rents.apartment')
     .catch((err) => {
       res.status(400);
       throw new Error("Tenant not found");
@@ -22,10 +24,13 @@ const getTenant = asyncHandler(async (req, res) => {
 });
 
 const addTenant = async (req, res) => {
-  const tenant = new Tenant(req.body);
+  const body  = req.body
+  delete body?._id
+  const tenant = new Tenant(body);
   try {
     const newTenant = await tenant.save();
     if (newTenant) {
+      console.log(newTenant)
       // sendMessage([res.body.contact_number], 'Your data has been captured')
       res.status(200).json(newTenant);
     }

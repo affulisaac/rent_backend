@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Rent = require("../model/rentModel");
+const Tenant = require("../model/tenantModel");
 const { sendMessage } = require("../services/arkesel-sms");
 
 const getAllRent = async (req, res) => {
@@ -24,10 +25,18 @@ const getRent = asyncHandler(async (req, res) => {
 });
 
 const addRent = async (req, res) => {
+  const body = req.body
+  delete body?._id
   const rent = new Rent(req.body);
   try {
     const newRent = await rent.save();
     if (newRent) {
+     const tenant = await Tenant.findOne({_id: body.tenant})
+    if(tenant){
+      tenant.rents.push(rent?._id)
+      const updatedTenant = await Tenant.findByIdAndUpdate({_id: tenant?._id}, tenant)
+      console.log(updatedTenant)
+    }
       // sendMessage([res.body.contact_number], 'Your data has been captured')
       res.status(200).json(newRent);
     }
