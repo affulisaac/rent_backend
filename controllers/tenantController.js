@@ -1,12 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const Tenant = require("../model/tenantModel");
-const { sendSMS } = require("../services/hubtel-sms");
+const { sendMessage } = require("../services/arkesel-sms");
 
 const getAllTenants = async (req, res) => {
   try {
-    const tenants = await Tenant.find()
-      .populate("user", "name email _id")
-      .populate("appartment");
+    const tenants = await Tenant.find().populate("user", "name email _id");
     res.status(200).json(tenants);
   } catch (error) {
     res.status(400).json(error.message);
@@ -15,7 +13,7 @@ const getAllTenants = async (req, res) => {
 
 const getTenant = asyncHandler(async (req, res) => {
   const tenant = await Tenant.findById(req.params.id)
-    .populate("appartment")
+    .populate("user", "name email _id")
     .catch((err) => {
       res.status(400);
       throw new Error("Tenant not found");
@@ -24,12 +22,15 @@ const getTenant = asyncHandler(async (req, res) => {
 });
 
 const addTenant = async (req, res) => {
-  const tenant  = new Tenant(req.body)
+  const tenant = new Tenant(req.body);
   try {
-    const newTenant = await tenant.save()
-    res.status(200).json(newTenant);
+    const newTenant = await tenant.save();
+    if (newTenant) {
+      // sendMessage([res.body.contact_number], 'Your data has been captured')
+      res.status(200).json(newTenant);
+    }
   } catch (error) {
-    res.status(400).json({message: error.message});
+    res.status(400).json({ message: error.message });
   }
 };
 

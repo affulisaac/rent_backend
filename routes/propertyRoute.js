@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const { getProperties, addProperty, deleteProperty, updateProperty, getProperty }  = require('../controllers/propertyController')
-const { protect } = require('../middlewares/authMiddleware')
+const { protect } = require('../middleware/authMiddleware')
 const { propertySchema } = require('../model/schemaModel')
-const { validateParams } = require('../middlewares/validatorMiddleware')
+const { validateParams } = require('../middleware/validatorMiddleware')
 
 
 router.route('/').get(getProperties).post(protect, validateParams(propertySchema), addProperty)

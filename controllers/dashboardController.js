@@ -2,23 +2,23 @@ const asyncHandler = require("express-async-handler");
 const Property = require("../model/propertyModel");
 const Tenant = require('../model/tenantModel')
 const Payment = require('../model/paymentModel')
-const Appartment = require('../model/appartmentModel')
+const Apartment = require('../model/apartmentModel')
 
 
 const getSummary = asyncHandler(async (req, res) => {
-  let dasboard = {}
+  let dashboard = {}
   Promise.all([
     Property.countDocuments(),
     Tenant.countDocuments(),
     Payment.aggregate([
       { $group: { _id: null, amount: { $sum: '$amount' }}},
     ]),
-    Appartment.countDocuments()
-  ]).then(([property, tenant, payment, appartment])=>{
-    dasboard = {
-      property, tenant, payment: payment[0].amount, appartment
+    Apartment.countDocuments()
+  ]).then(([property, tenant, payment, apartment])=>{
+    dashboard = {
+      property, tenant, payment: payment[0]?.amount || 0, apartment
     }
-   res.status(200).json(dasboard)
+   res.status(200).json(dashboard)
   })
  
 });

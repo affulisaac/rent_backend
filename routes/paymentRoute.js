@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const { getPayments, addPayment, deletePayment, updatePayment, getPayment }  = require('../controllers/paymentController')
-const { protect } = require('../middlewares/authMiddleware')
+const { protect } = require('../middleware/authMiddleware')
 const { paymentSchema } = require('../model/schemaModel')
-const { validateParams } = require('../middlewares/validatorMiddleware')
-const { filter } = require('../middlewares/filter')
+const { validateParams } = require('../middleware/validatorMiddleware')
+const { filter } = require('../middleware/filter')
 
 
 router.route('/').get(protect, filter,  getPayments).post( validateParams(paymentSchema), addPayment)

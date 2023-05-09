@@ -1,17 +1,17 @@
 const mongoose = require('mongoose')
 
-const appartmentSchema = mongoose.Schema({
+const apartmentSchema = mongoose.Schema({
  
     name: {
         type: String,
-        required: [ true, 'Appartment title is required']
+        required: [ true, 'Apartment title is required']
     },
     rooms: {
         type: Array,
     },
     description: {
         type: String,
-        required: [ true, 'Appartment description is required']
+        required: [ true, 'Apartment description is required']
     }, 
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,4 +32,4 @@ const appartmentSchema = mongoose.Schema({
     timestamps: true
 }
 ) 
-module.exports = mongoose.model('Appartment', appartmentSchema)
+module.exports = mongoose.model('Apartment', apartmentSchema)

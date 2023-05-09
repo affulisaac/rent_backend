@@ -5,6 +5,7 @@ const User = require("../model/userModel");
 const Business = require("../model/businessModel");
 const crypto = require("crypto");
 const { sendSMS } = require("../services/hubtel-sms");
+const { sendMessage } = require("../services/arkesel-sms");
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -46,9 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create(req.body);
   if (user) {
     const firsName = req.body?.name?.split(" ")[0];
-    sendSMS(
-      req.body?.contact_number,
-      `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`,
+    sendMessage([req.body?.contact_number], `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`
     );
     delete user?._doc?.password;
     res.status(201).json(user?._doc);

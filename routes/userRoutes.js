@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const {registerUser, updateUser, deleteUser, deactivateUser, getMe, loginUser, getUsers} = require('../controllers/userContrller')
-const { protect } = require('../middlewares/authMiddleware')
+const { protect } = require('../middleware/authMiddleware')
 const { userSchema, userUpdateSchema } = require('../model/schemaModel')
-const { validateParams } = require('../middlewares/validatorMiddleware')
+const { validateParams } = require('../middleware/validatorMiddleware')
 
 router.route('/').get(protect, getUsers).post(protect, validateParams(userSchema), registerUser)
 router.route('/:id').put(protect, validateParams(userUpdateSchema), updateUser)

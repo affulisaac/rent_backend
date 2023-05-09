@@ -1,46 +1,70 @@
 const asyncHandler = require("express-async-handler");
-const Property = require("../model/propertyModel");
+const Rent = require("../model/rentModel");
+const { sendMessage } = require("../services/arkesel-sms");
 
-const getProperties = asyncHandler(async (req, res) => {
-  const properties = await Property.find();
-  res.status(200).json(properties);
-});
-
-const addProperty = asyncHandler(async (req, res) => {
-  if (!req.body.title) {
-    res.status(400);
-    throw new Error("Please provide title");
+const getAllRent = async (req, res) => {
+  try {
+    const rents = await Rent.find()
+      .populate("user", "name email _id")
+      .populate("apartment");
+    res.status(200).json(rents);
+  } catch (error) {
+    res.status(400).json(error.message);
   }
+};
 
-  const property = await Property.create({
-    location: req.body.location,
-    title: req.body.title,
-    number: req.body.number,
-    description: req.body.description,
-  });
-  res.status(200).json(property);
+const getRent = asyncHandler(async (req, res) => {
+  const rent = await Rent.findById(req.params.id)
+    .populate("apartment")
+    .catch((err) => {
+      res.status(400);
+      throw new Error("Rent not found");
+    });
+  res.status(200).json(rent);
 });
 
-const updateProperty = asyncHandler(async (req, res) => {
-  const property = await Property.findById(req.params.id);
-  if (!property) {
-    res.status(400);
-    throw new Error("Property not found");
+const addRent = async (req, res) => {
+  const rent = new Rent(req.body);
+  try {
+    const newRent = await rent.save();
+    if (newRent) {
+      // sendMessage([res.body.contact_number], 'Your data has been captured')
+      res.status(200).json(newRent);
+    }
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
-  const updateProperty = Property.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  });
-  res.status(200).json(updateProperty);
-});
+};
 
-const deleteProperty = asyncHandler(async (req, res) => {
-  const property = await Property.findById(req.params.id);
-  if (!property) {
+const updateRent = async (req, res) => {
+  const rent = await Rent.findById(req.params.id);
+  if (!rent) {
+    res.status(400);
+    throw new Error("Rent not found");
+  }
+  const updatedRent = await Rent.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+  console.log(updatedRent);
+  res.status(200).json(updatedRent?._update);
+};
+
+const deleteRent = asyncHandler(async (req, res) => {
+  const rent = await Rent.findById(req.params.id);
+  if (!rent) {
     res.status(400);
     throw new Error();
   }
-  await Property.findByIdAndDelete(req.params.id);
+  await Rent.findByIdAndDelete(req.params.id);
   res.status(200).json({ id: req.params.id, message: "Deleted successfully" });
 });
 
-module.exports = { getProperties, addProperty, deleteProperty, updateProperty };
+module.exports = {
+  getAllRent,
+  addRent,
+  deleteRent,
+  updateRent,
+  getRent,
+};
