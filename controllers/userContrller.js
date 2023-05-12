@@ -28,8 +28,8 @@ const loginUser = asyncHandler(async (req, res) => {
 },);
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-
+  const { email, password, name } = req.body;
+try {
   const userExist = await User.findOne({ email });
   if (userExist) {
     res.status(400);
@@ -46,15 +46,19 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create(req.body);
   if (user) {
     const firsName = req.body?.name?.split(" ")[0];
-    sendMessage([req.body?.contact_number+""], `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`);
-    sendEmail('affulisaac736@gmail.com', 'Test', 'This is the test')
+   // sendMessage([req.body?.contact_number+""], `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`);
+    await sendEmail(email, 'Welcome to Miki Rent', '../../templates/login-credentials.ejs', {email, password, name })
     delete user?._doc?.password;
     res.status(201).json(user?._doc);
   } else {
     res.status(400);
     throw new Error("Invalid user data");
   }
-},);
+} catch (error) {
+  console.log(error)
+}
+ 
+});
 
 const getMe = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).populate(
