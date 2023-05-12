@@ -28,7 +28,7 @@ const updateProperty = async (req, res) => {
       res.status(400);
       throw new Error("Property not found");
     }
-    const updatedProperty = Property.findByIdAndUpdate(
+    const updatedProperty = await Property.findByIdAndUpdate(
       req.params.id,
       req.body
     ).populate("user");
