@@ -4,9 +4,8 @@ const asyncHandler = require("express-async-handler");
 const User = require("../model/userModel");
 const Business = require("../model/businessModel");
 const crypto = require("crypto");
-const { sendSMS } = require("../services/hubtel-sms");
 const { sendMessage } = require("../services/arkesel-sms");
-
+const { sendEmail } = require('../services/mailer')
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -47,8 +46,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create(req.body);
   if (user) {
     const firsName = req.body?.name?.split(" ")[0];
-    sendMessage([req.body?.contact_number], `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`
-    );
+    sendMessage([req.body?.contact_number+""], `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`);
+    sendEmail('affulisaac736@gmail.com', 'Test', 'This is the test')
     delete user?._doc?.password;
     res.status(201).json(user?._doc);
   } else {
@@ -113,23 +112,25 @@ const deleteUser = asyncHandler(async (req, res) => {
 },);
 
 const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id)
+  try {
+    const user = await User.findById(req.params.id)
     if (!user) {
       res.status(400);
       throw new Error("Tenant not found");
     }
   const email = await User.find({ email: res.body?.email });
-  console.log(email.length > 0)
     if(email.length > 0){
       res.status(400);
       throw new Error("Email has already been taken");
-    }
-  // console.log(user, req.params.id)
-  
+    }  
   const updatedUser = User.updateOne({ _id: req.params.id }, req.body)
   if(updatedUser){
       res.status(200).json(updatedUser?._update);
   }
+  } catch (error) {
+    res.status(400).json({message: error?.message});
+  }
+ 
 },);
 
 module.exports =
