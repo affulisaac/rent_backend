@@ -1,4 +1,3 @@
-const { string } = require("joi");
 const Joi = require("joi");
 
 const businessSchema = Joi.object({
@@ -36,7 +35,7 @@ const userSchema = Joi.object({
   email: Joi.string().email().required(),
   nationality: Joi.string().required(),
   national_id: Joi.allow(),
-  contact_number: Joi.string(),
+  contact_number: Joi.number(),
   alternative_number: Joi.allow(),
   password: Joi.required(),
   user: Joi.allow(),

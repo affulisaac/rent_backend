@@ -1,30 +1,37 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
+const ejs = require("ejs");
+const path = require("path");
 
-// set up nodemailer transporter
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.SENDER_EMAIL_ID, 
-        pass: process.env.EMAIL_PASSWORD
-    }
+  host: process.env.EMAIL_HOST,
+  port: process.env.EMAIL_PORT, // or 587 if using TLS
+  secure: true, // true for 465, false for other ports
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD,
+  },
 });
+const sendEmail = async (to, subject, template, data) => {
+  try {
+    const emailTemplate = await ejs.renderFile(path.join(__dirname, 'templates', template), data);
 
-// define function to send email notification
-const sendEmail = (recipient, subject, body) => {
     const mailOptions = {
-        from: process.env.SENDER_EMAIL, 
-        to: recipient, 
-        subject: subject, 
-        text: body
+      from: "Miki Rent <info@mikirent.com>",
+      to,
+      subject,
+      html: emailTemplate,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(`Email sent to ${JSON.stringify(recipient)}: ${info.response}`);
-        }
+      if (error) {
+        console.error(error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
     });
+  } catch (error) {
+    console.log(error)
+  }
 };
 
-module.exports = { sendEmail }
+module.exports = { sendEmail };
