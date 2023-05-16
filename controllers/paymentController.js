@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Payment = require("../model/paymentModel")
 const Tenant = require("../model/tenantModel")
-const { sendSMS } = require("../services/hubtel-sms")
 const { sendMessage } = require("../services/arkesel-sms")
 
 const getPayments = asyncHandler(async (req, res) => {
@@ -10,16 +9,21 @@ const getPayments = asyncHandler(async (req, res) => {
   res.status(200).json(payment);
 });
 
-const addPayment = asyncHandler(async (req, res) => {
-  console.log(req.body)
+const addPayment = async (req, res) => {
+  try {
   const payment = await Payment.create(req.body);
   const tenant = await Tenant.findById(req.body?.tenant)
+  console.log(payment)
   if(tenant){
     console.log(tenant)
-    sendMessage(['0547469379'], `Payment of Ghc${req.body.amount} has been received for your rent`)
+    sendMessage([tenant?.contact_number], `Dear ${tenant?.name}, your payment of Ghc${payment?.amount}.00 has been received. Please check your email for copy of the receipt.`)
   }
-  res.status(200).json(payment);
-});
+  res.status(200).json(payment); 
+  } catch (error) {
+    res.status(400).json({message: error?.message})
+  }
+
+};
 
 const updatePayment = asyncHandler(async (req, res) => {
   const payment = await Payment.findById(req.params.id);

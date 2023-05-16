@@ -3,7 +3,7 @@ const Apartment = require("../model/apartmentModel");
 const Tenant = require("../model/tenantModel");
 
 const getApartments = asyncHandler(async (req, res) => {
-  const apartment = await Apartment.find().populate("property");
+  const apartment = await Apartment.find(req.filterObj).populate("property");
   res.status(200).json(apartment);
 });
 

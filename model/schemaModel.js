@@ -6,6 +6,8 @@ const businessSchema = Joi.object({
   location: Joi.string().required(),
   description: Joi.string().required(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+
 });
 
 const paymentSchema = Joi.object({
@@ -18,6 +20,8 @@ const paymentSchema = Joi.object({
   method: Joi.string().required(),
   description: Joi.string().required(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+
 });
 
 const propertySchema = Joi.object({
@@ -27,6 +31,8 @@ const propertySchema = Joi.object({
   gpgps: Joi.string().required(),
   description: Joi.string().required(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+
 });
 
 const userSchema = Joi.object({
@@ -38,11 +44,16 @@ const userSchema = Joi.object({
   contact_number: Joi.number(),
   alternative_number: Joi.allow(),
   password: Joi.required(),
-  user: Joi.allow(),
   alternative_contact: Joi.allow(),
   address: Joi.required(),
   repeat_password: Joi.allow(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+  is_client: Joi.required(),
+  business: Joi.allow(),
+  client: Joi.allow(),
+  business_name: Joi.allow(),
+
 });
 
 const userUpdateSchema = Joi.object({
@@ -57,6 +68,12 @@ const userUpdateSchema = Joi.object({
   alternative_contact: Joi.allow(),
   address: Joi.required(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+  is_client: Joi.required(),
+  business: Joi.allow(),
+  business_name: Joi.allow(),
+  client: Joi.allow(),
+
 });
 
 const apartmentSchema = Joi.object({
@@ -67,11 +84,17 @@ const apartmentSchema = Joi.object({
   property: Joi.allow(),
   description: Joi.string().required(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+
 });
 
 const SMSSchema = Joi.object({
   type: Joi.string().required(),
+  tenant_id: Joi.allow(),
+  rent_id: Joi.allow(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+
 });
 
 const tenantSchema = Joi.object({
@@ -82,17 +105,19 @@ const tenantSchema = Joi.object({
   email: Joi.string().email().required(),
   national_id: Joi.string().required(),
   occupation: Joi.string().required(),
-  emergency_contact: Joi.string().required(),
+  emergency_contact: Joi.number().required(),
   emergency_contact_name: Joi.string().required(),
   _id: Joi.allow(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+
 });
 
 const rentSchema = Joi.object({
   rent_start_date: Joi.string().required(),
   number_of_month: Joi.number().required(),
   rent_end_date: Joi.string().required(),
-  amount_per_month: Joi.string().required(),
+  amount_per_month: Joi.number().required(),
   apartment: Joi.string().required(),
   total_amount: Joi.number().required(),
   rooms: Joi.array(),
@@ -100,6 +125,8 @@ const rentSchema = Joi.object({
   remarks: Joi.string().allow(),
   _id: Joi.allow(),
   user: Joi.allow(),
+  client_id: Joi.allow(),
+
 });
 
 module.exports = {

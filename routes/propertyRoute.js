@@ -4,9 +4,10 @@ const { getProperties, addProperty, deleteProperty, updateProperty, getProperty 
 const { protect } = require('../middleware/authMiddleware')
 const { propertySchema } = require('../model/schemaModel')
 const { validateParams } = require('../middleware/validatorMiddleware')
+const { filter } = require('../middleware/filter')
 
 
-router.route('/').get(getProperties).post(protect, validateParams(propertySchema), addProperty)
+router.route('/').get(protect, filter, getProperties).post(protect, validateParams(propertySchema), addProperty)
 router.route('/:id').put(protect, updateProperty).delete(protect, deleteProperty).get(protect, getProperty) 
 
 module.exports = router

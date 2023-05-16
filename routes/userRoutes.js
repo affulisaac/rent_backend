@@ -4,8 +4,9 @@ const {registerUser, updateUser, deleteUser, deactivateUser, getMe, loginUser, g
 const { protect } = require('../middleware/authMiddleware')
 const { userSchema, userUpdateSchema } = require('../model/schemaModel')
 const { validateParams } = require('../middleware/validatorMiddleware')
+const { filter } = require('../middleware/filter')
 
-router.route('/').get(protect, getUsers).post(protect, validateParams(userSchema), registerUser)
+router.route('/').get(protect, filter, getUsers).post(protect, validateParams(userSchema), registerUser)
 router.route('/:id').put(protect, validateParams(userUpdateSchema), updateUser)
 router.post('/me', protect, getMe)
 router.delete('/delete/:id', protect, deleteUser)

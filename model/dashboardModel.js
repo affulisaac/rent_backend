@@ -26,7 +26,11 @@ const apartmentSchema = mongoose.Schema({
     tenant: {
         type: Array,
         required: false
-    }
+    },
+    client_id: {
+        type: String,
+        required: true,
+    },
 },
 {
     timestamps: true

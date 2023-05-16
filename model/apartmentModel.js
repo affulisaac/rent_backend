@@ -24,6 +24,10 @@ const apartmentSchema = mongoose.Schema({
         required: true,
         ref: 'Property'
     },
+    client_id: {
+        type: String,
+        required: true,
+    },
     tenant: {
         type: Array,
         required: false

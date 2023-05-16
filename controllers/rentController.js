@@ -5,7 +5,7 @@ const { sendMessage } = require("../services/arkesel-sms");
 
 const getAllRent = async (req, res) => {
   try {
-    const rents = await Rent.find()
+    const rents = await Rent.find(req.filterObj)
       .populate("user", "name email _id")
       .populate("apartment");
     res.status(200).json(rents);

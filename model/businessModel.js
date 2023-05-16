@@ -2,22 +2,23 @@ const mongoose = require('mongoose')
 
 const businessSchema = mongoose.Schema({
 
-    name: {
-        type: String,
-        required: [ true, 'Business name is required']
-    },
-    location: {
-        type: String,
-        required: false
-    },
-    description: {
-        type: String,
-        required: [ true, 'Business description is required']
-    }, 
+
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'User'
+    },
+    name: {
+        type: String,
+        required: true,
+    }, 
+    owner: {
+        type: String,
+        required: true,
+    },
+    client_id: {
+        type: String,
+        required: true,
     },
 },
 {

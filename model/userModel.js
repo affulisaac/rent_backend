@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const businessModel = require('./businessModel')
 
 const userSchema = mongoose.Schema({
     name: {
@@ -33,18 +34,38 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Please provide a valida password'],
+        required: [true, 'Please provide a valid password'],
 
     }, 
     business: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Business",
-        required: [false, "User business is required"]
+        ref: 'Business'
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: 'User'
+    },
+    client_id: {
+        type: String,
+        required: true,
+        ref:'User' 
+    },
+    business: {
+        type: String,
+        required: false,
+    },
+    business_name: {
+        type: String,
+        required: false,
+    },
+    is_client: {
+        type: String,
+        required: false,
+    },
+    client: {
+        type: String,
+        required: false,
     },
 },
 {

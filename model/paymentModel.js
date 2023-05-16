@@ -37,6 +37,10 @@ const paymentSchema = mongoose.Schema({
         required: false,
         ref: 'User'
     },
+    client_id: {
+        type: String,
+        required: true,
+    },
 },
 {
     timestamps: true

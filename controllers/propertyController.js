@@ -3,7 +3,7 @@ const Property = require("../model/propertyModel");
 
 const getProperties = async (req, res) => {
   try {
-      const property = await Property.find();
+      const property = await Property.find(req.filterObj);
   res.status(200).json(property);
   } catch (error) {
     res.status(400).json({ message: error?.message });

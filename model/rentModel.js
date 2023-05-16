@@ -47,6 +47,10 @@ const mongoose = require("mongoose");
           type: Number,
           required: [true, "Number of month is required"],
         },
+        client_id: {
+          type: String,
+          required: true,
+      },
     },
     {
       timestamps: true,

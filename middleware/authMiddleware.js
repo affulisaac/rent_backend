@@ -19,7 +19,7 @@ const protect = asyncHandler( async (req, res, next) => {
             req.user = user
             if(req.body){
                 req.body.user = user._id
-                req.body.client
+                req.body.client_id = user.client_id
             }
             next()
 
