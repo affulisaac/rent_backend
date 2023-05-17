@@ -125,6 +125,7 @@ const rentSchema = Joi.object({
   remarks: Joi.string().allow(),
   _id: Joi.allow(),
   user: Joi.allow(),
+  property: Joi.allow(),
   client_id: Joi.allow(),
 
 });

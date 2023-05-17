@@ -38,6 +38,9 @@ const mongoose = require("mongoose");
         type: String,
         required: true
       },
+      property: {
+        type: String,
+      },
       user: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,

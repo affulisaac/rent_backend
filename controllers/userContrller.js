@@ -6,6 +6,7 @@ const Business = require("../model/businessModel");
 const crypto = require("crypto");
 const { sendMessage } = require("../services/arkesel-sms");
 const { sendEmail } = require('../services/mailer');
+const mongoose = require('mongoose');
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -49,8 +50,8 @@ const registerUser = asyncHandler(async (req, res) => {
 try {
   const userExist = await User.findOne({ email });
   if (userExist) {
-    res.status(400);
-    throw new Error("The email has already been used");
+    res.status(400).json({message: `The email has already been used`});
+    // throw new Error("The email has already been used");
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -66,7 +67,8 @@ try {
     if(req.body.is_client === 'Yes') {
       const tempBusiness = {name: req.body.business_name, owner: user?._id, user: req?.body?.user, client_id: req?.body?.client_id}
       const business = await Business.create(tempBusiness)
-      const userUpdated = await User.updateOne({_id: user._id}, {business: business._id})
+      const businessId = new mongoose.Types.ObjectId(business._id);
+      const userUpdated = await User.updateOne({_id: user._id}, {business: businessId})
       console.log(userUpdated)
     }
    const firsName = req.body?.name?.split(" ")[0];
@@ -85,9 +87,8 @@ try {
 });
 
 const getMe = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).populate(
-    "business",
-    "-password",
+  const user = await User.findById(req.user.id).select(
+    `-password`
   );
   res.status(200).json(user);
 },);
@@ -128,7 +129,7 @@ const getUsers = asyncHandler(async (req, res) => {
   const users = await User.find({$or: [
     {user: req.body.user},
     {client_id: req.body.client_id}
-  ]}).populate("business").select("-password");
+  ]}).select("-password").populate('user', '-password')
   res.status(200).json(users);
 },);
 
