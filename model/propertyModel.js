@@ -23,6 +23,11 @@ const propertySchema = mongoose.Schema({
         required: false,
         ref: 'User'
     },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, 'You have not been assigned to any business'],
+        ref: 'Business'
+    },
     client_id: {
         type: String,
         required: true,

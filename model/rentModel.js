@@ -41,11 +41,17 @@ const mongoose = require("mongoose");
       property: {
         type: String,
       },
+
       user: {
         type: mongoose.Schema.Types.ObjectId,
         required: false,
         ref: "User",
       },
+      business: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: [true, 'You have not been assigned to any business'],
+        ref: 'Business'
+    },
       number_of_month: {
           type: Number,
           required: [true, "Number of month is required"],

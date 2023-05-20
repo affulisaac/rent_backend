@@ -39,6 +39,7 @@ const userSchema = mongoose.Schema({
     }, 
     business: {
         type: mongoose.Schema.Types.ObjectId,
+        required: [true, 'You have not been assigned to any business'],
         ref: 'Business'
     },
     user: {
@@ -49,11 +50,6 @@ const userSchema = mongoose.Schema({
     client_id: {
         type: String,
         required: true,
-        ref:'User' 
-    },
-    business: {
-        type: String,
-        required: false,
     },
     business_name: {
         type: String,

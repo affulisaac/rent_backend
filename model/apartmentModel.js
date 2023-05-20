@@ -21,8 +21,13 @@ const apartmentSchema = mongoose.Schema({
     },
     property: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
+        required: [true, 'You have not been assigned to any business'],
         ref: 'Property'
+    },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'Business'
     },
     client_id: {
         type: String,

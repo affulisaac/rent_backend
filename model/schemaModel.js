@@ -7,6 +7,8 @@ const businessSchema = Joi.object({
   description: Joi.string().required(),
   user: Joi.allow(),
   client_id: Joi.allow(),
+  owner: Joi.allow(),
+  business: Joi.required(),
 
 });
 
@@ -21,6 +23,8 @@ const paymentSchema = Joi.object({
   description: Joi.string().required(),
   user: Joi.allow(),
   client_id: Joi.allow(),
+  business: Joi.required(),
+
 
 });
 
@@ -32,7 +36,7 @@ const propertySchema = Joi.object({
   description: Joi.string().required(),
   user: Joi.allow(),
   client_id: Joi.allow(),
-
+  business: Joi.required(),
 });
 
 const userSchema = Joi.object({
@@ -53,7 +57,6 @@ const userSchema = Joi.object({
   business: Joi.allow(),
   client: Joi.allow(),
   business_name: Joi.allow(),
-
 });
 
 const userUpdateSchema = Joi.object({
@@ -73,7 +76,7 @@ const userUpdateSchema = Joi.object({
   business: Joi.allow(),
   business_name: Joi.allow(),
   client: Joi.allow(),
-
+  
 });
 
 const apartmentSchema = Joi.object({
@@ -85,7 +88,7 @@ const apartmentSchema = Joi.object({
   description: Joi.string().required(),
   user: Joi.allow(),
   client_id: Joi.allow(),
-
+  business: Joi.required(),
 });
 
 const SMSSchema = Joi.object({
@@ -94,6 +97,7 @@ const SMSSchema = Joi.object({
   rent_id: Joi.allow(),
   user: Joi.allow(),
   client_id: Joi.allow(),
+  business: Joi.required(),
 
 });
 
@@ -110,6 +114,7 @@ const tenantSchema = Joi.object({
   _id: Joi.allow(),
   user: Joi.allow(),
   client_id: Joi.allow(),
+  business: Joi.required(),
 
 });
 
@@ -127,6 +132,7 @@ const rentSchema = Joi.object({
   user: Joi.allow(),
   property: Joi.allow(),
   client_id: Joi.allow(),
+  business: Joi.required(),
 
 });
 

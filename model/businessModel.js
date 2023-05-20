@@ -8,17 +8,32 @@ const businessSchema = mongoose.Schema({
         required: false,
         ref: 'User'
     },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: 'Business'
+    },
     name: {
         type: String,
         required: true,
     }, 
     owner: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true,
+    },
+    location: {
+        type: String,
+        required: false,
+    },
+
+    description: {
+        type: String,
+        required: false,
     },
     client_id: {
         type: String,
-        required: true,
+        required: false,
     },
 },
 {
