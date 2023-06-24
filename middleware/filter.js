@@ -7,7 +7,6 @@ const filter = (req, res, next) => {
     }
   }
   req.filterObj = searchObject;
-  console.log(req.filterObj)
   next();
 };
 

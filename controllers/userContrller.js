@@ -65,7 +65,7 @@ const registerUser = asyncHandler(async (req, res) => {
       const firsName = req.body?.name?.split(" ")[0];
       sendMessage(
         [req.body?.contact_number + ""],
-        `Hello ${firsName}, Your account has been created on mikirent.com Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`
+        `Hello ${firsName}, Your account has been created on mikirent.com. Login with the email: ${req.body?.email} and password: ${password} at mikirent.com`
       );
       await sendEmail(
         email,

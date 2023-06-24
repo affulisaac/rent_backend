@@ -4,7 +4,21 @@ const { sendMessage } = require("../services/arkesel-sms");
 
 const getAllTenants = async (req, res) => {
   try {
-    const tenants = await Tenant.find(req.filterObj).populate('rents').populate("user", "name email _id");
+    const tenants = await Tenant.find(req.filterObj)
+    .populate({
+      path: "rents",
+      populate: [
+        {
+          path: "apartment",
+          select: 'name _id' 
+        },
+        {
+          path: "property",
+          select: 'name _id' 
+        },
+      ],
+    })
+    .populate("user", "name email _id");
     res.status(200).json(tenants);
   } catch (error) {
     res.status(400).json(error.message);
@@ -14,8 +28,20 @@ const getAllTenants = async (req, res) => {
 const getTenant = asyncHandler(async (req, res) => {
   const tenant = await Tenant.findById(req.params.id)
     .populate("user", "name email _id")
-    .populate('rents')
-    .populate('rents.apartment')
+    .populate({
+      path: "rents",
+      populate: [
+        {
+          path: "apartment",
+          select: 'name _id rooms' 
+        },
+        {
+          path: "property",
+          select: 'name _id location' 
+        },
+      ],
+    })
+    .populate('business')
     .catch((err) => {
       res.status(400);
       throw new Error("Tenant not found");

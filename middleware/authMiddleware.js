@@ -19,11 +19,9 @@ const protect = asyncHandler(async (req, res, next) => {
 
       const user = await User.findById(decoded.id).select("-password");
       req.user = user;
-      console.log(req.baseUrl, req.method);
       if (req.body) {
         req.body.user = user._id;
         req.body.client_id = user.client_id;
-        //    if(req.baseUrl !== '/api/users' && ( req.method !== 'POST' || req.method !== 'PUT' ) )
         if (!req.body.business) {
           req.body.business = user?.business?._id;
         }

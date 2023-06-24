@@ -27,6 +27,7 @@ app.use('/api/rent', require('./routes/rentRoutes'))
 app.use('/api/businesses', require('./routes/businessRoutes'))
 app.use('/api/sms', require('./routes/SMSRoute'))
 app.use('/api/dashboard', require('./routes/dashboardRoute'))
+app.use('/api/receipt', require('./routes/receipt'))
 
 app.use(errorHandler) 
 

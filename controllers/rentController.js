@@ -17,6 +17,7 @@ const getAllRent = async (req, res) => {
 const getRent = asyncHandler(async (req, res) => {
   const rent = await Rent.findById(req.params.id)
     .populate("apartment")
+    .populate('business')
     .catch((err) => {
       res.status(400);
       throw new Error("Rent not found");

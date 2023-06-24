@@ -4,7 +4,7 @@
   "description": "A rent app for property owners",
   "main": "server.js",
   "scripts": {
-    "start:dev": "nodemon server.js",
+    "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "keywords": [

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getPayments, addPayment, deletePayment, updatePayment, getPayment }  = require('../controllers/paymentController')
+const { getPayments, getAggregatedPayments, addPayment, deletePayment, updatePayment, getPayment }  = require('../controllers/paymentController')
 const { protect } = require('../middleware/authMiddleware')
 const { paymentSchema } = require('../model/schemaModel')
 const { validateParams } = require('../middleware/validatorMiddleware')
