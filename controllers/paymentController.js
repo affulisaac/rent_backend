@@ -2,12 +2,18 @@ const asyncHandler = require("express-async-handler");
 const Payment = require("../model/paymentModel");
 const Tenant = require("../model/tenantModel");
 const { sendMessage } = require("../services/arkesel-sms");
-
+const { sendEmail } = require("../services/mailer");
+const moment = require("moment");
 const getPayments = async (req, res) => {
   try {
     const { aggregate } = req.query;
     if (aggregate) {
       const tenantPayments = await Payment.aggregate([
+        {
+          $match: {
+            business: req?.user?.business?._id,
+          },
+        },
         {
           $group: {
             _id: "$tenant",
@@ -75,6 +81,7 @@ const getPayments = async (req, res) => {
             tenant: {
               _id: "$tenant._id",
               name: "$tenant.name",
+              contact_number: "$tenant.contact_number",
               email: "$tenant.email",
             },
           },
@@ -83,7 +90,7 @@ const getPayments = async (req, res) => {
       res.status(200).json(tenantPayments);
     } else {
       const payment = await Payment.find(req.filterObj)
-        .populate("tenant", "name email")
+        .populate("tenant", "name email contact_number")
         .populate({
           path: "rent",
           populate: [
@@ -109,7 +116,6 @@ const getAggregatedPayments = async (req, res) => {
   try {
     const payment = await Payment.find(req.filterObj)
       .populate("tenant", "name email")
-      // .populate('rent')
       .populate({
         path: "rent",
         populate: [
@@ -133,12 +139,28 @@ const addPayment = async (req, res) => {
   try {
     const payment = await Payment.create(req.body);
     const tenant = await Tenant.findById(req.body?.tenant);
-    console.log(payment);
+    const { name, email } = tenant;
+    const date = moment(payment?.createdAt).format('MMMM Do YYYY, h:mm:ss a');
+    const { amount, _id: paymentId, method, } = payment;
+    const formatedAmount = amount.toLocaleString("en-US");
+    const link = `${process.env.FRONTEND_URL}/receipt/${payment?._id}`;
     if (tenant) {
       console.log(tenant);
       sendMessage(
         [tenant?.contact_number],
-        `Dear ${tenant?.name}, your payment of Ghc${payment?.amount}.00 has been received. Kindly click on the link to view your receipt. ${process.env.FRONTEND_URL}/receipt/${payment?._id}`
+        `Dear ${
+          tenant?.name
+        }, your payment of GHS ${payment?.amount.toLocaleString(
+          "en-US"
+        )}.00 has been received. Kindly click on the link to view your receipt. ${
+         link}`
+      );
+      console.log( { name, email, amount: formatedAmount, paymentId, link, date, paymentMethod: method })
+      await sendEmail(
+        tenant?.email,
+        `GHS ${formatedAmount}.00 rent payment received`,
+        "../../templates/receipt.ejs",
+        { name, email, amount: formatedAmount,  link, date, paymentMethod: method, paymentId }
       );
     }
     res.status(200).json(payment);

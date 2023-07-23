@@ -2,8 +2,10 @@ const asyncHandler = require("express-async-handler");
 const Business = require("../model/businessModel");
 
 const getBusinesses = asyncHandler(async (req, res) => {
-  const { user } = req.body;
-  const business = await Business.find({ owner: user?._id })
+  console.log({ _id: req?.body?.business }, { owner: req.body.user })
+  const business = await Business.find({
+    $or: [{ _id: req?.body?.business }, { user: req.body.user }],
+  })
     .populate("user", "name email _id")
     .populate("owner", "name contact_number _id");
   res.status(200).json(business);
@@ -15,10 +17,14 @@ const getBusinessesByUser = asyncHandler(async (req, res) => {
   res.status(200).json(business);
 });
 
-const addBusiness = asyncHandler(async (req, res) => {
-  const business = await Business.create(req.body);
-  res.status(200).json(business);
-});
+const addBusiness = async (req, res) => {
+  try {
+    const business = await Business.create(req.body);
+    res.status(200).json(business);
+  } catch (error) {
+    res.status(400).json({ message: error?.message });
+  }
+};
 
 const updateBusiness = async (req, res) => {
   try {
@@ -31,7 +37,7 @@ const updateBusiness = async (req, res) => {
       req.params.id,
       req.body
     );
-    console.log(updatedBusiness)
+    console.log(updatedBusiness);
     res.status(200).json(updatedBusiness);
   } catch (error) {
     res.status(400).json(error?.message);
