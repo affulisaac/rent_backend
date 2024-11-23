@@ -8,9 +8,26 @@ const { errorHandler } = require('./middleware/errorMiddleware')
 const connectDB = require('./config/db')
 const port = process.env.PORT || 8000
 
-connectDB()
-
 const app = express()
+// Configure Helmet with relaxed settings for API server
+app.use(
+    helmet({
+      contentSecurityPolicy: false,
+      crossOriginEmbedderPolicy: false
+    })
+  );
+  
+  // Configure CORS
+  app.use(cors({
+    origin: '*', // Replace with your frontend domain in production
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+    credentials: true,
+    maxAge: 86400
+  }));
+
+  connectDB()
+
 // app.use(rateLimiterRedisMiddleware);
 app.use(cors())
 app.use(express.json())
