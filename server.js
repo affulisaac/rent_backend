@@ -32,5 +32,11 @@ app.use('/api/receipt', require('./routes/receipt'))
 app.use(errorHandler) 
 
 
-app.listen(port, ()=>  console.log(`Server is running on port ${port}`)
-)
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+    const port = process.env.PORT || 8000;
+    app.listen(port, () => console.log(`Server is running on port ${port}`));
+  }
+  
+  // Export for Vercel
+  module.exports = app;
