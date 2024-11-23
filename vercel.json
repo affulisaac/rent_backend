@@ -24,8 +24,5 @@
         "src": "/(.*)",
         "dest": "server.js"
       }
-    ],
-    "auth": {
-      "redirect": false
-    }
+    ]
   }
